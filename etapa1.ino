@@ -1,19 +1,12 @@
 #include <ShiftDisplay.h>
-#define DATA 2
-#define LATCH 3
-#define CLOCK 4
-
 int valorLido, valor = -1, atual=-1;
 
 ShiftDisplay aledro(COMMON_CATHODE, 4);
  
 void setup() {
-  pinMode(DATA, 1);
-  pinMode(LATCH, 1);
-  pinMode(CLOCK, 1);
-  pinMode(A0, 1);
-  pinMode(A1, 1);
-  pinMode(A3, 0);
+  pinMode(A0, OUTPUT);
+  pinMode(A1, OUTPUT);
+  pinMode(A3, INPUT);
   pinMode(13, INPUT);
 
   digitalWrite(A1, 1);
