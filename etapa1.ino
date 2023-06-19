@@ -25,13 +25,13 @@ void loop() {
   if (valor == 1) {
     atual = 1;
     aledro.set("on");
-    digitalWrite(A1, 1);
-    digitalWrite(A0, 0);    
+    digitalWrite(A1, 0);
+    digitalWrite(A0, 1);    
   }else if (valor == 0) {
     atual = 0;
     aledro.set("off");
-    digitalWrite(A0, 1);
-    digitalWrite(A1, 0);
+    digitalWrite(A0, 0);
+    digitalWrite(A1, 1);
   } else if (valor == -1) {
     aledro.set("off");
   }
