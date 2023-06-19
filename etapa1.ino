@@ -38,14 +38,14 @@ void loop() {
 
   if (valorLido >= 673 && valorLido <= 693) {
     valor = 1;
-    if (atual != 1 && atual != -1) {
+    if (atual != 1) {
       tone(13, 12570);
       delay(350); 
       noTone(13);
     }
   }else if (valorLido >= 843 && valorLido <= 853) {
     valor = 0;
-    if (atual != 0 && atual != -1) {
+    if (atual != 0) {
       tone(13, 12570);
       delay(350);
       noTone(13);
