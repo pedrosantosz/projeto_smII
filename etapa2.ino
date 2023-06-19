@@ -20,12 +20,12 @@ void setup() {
 
 void loop() {
   valorLido = analogRead(A3);
-  if (valorLido >= 673 && valorLido <= 693) //503 ± 10
-    armado = 1;
-  else if (valorLido >= 843 && valorLido <= 853) //683 ± 10
-    armado = 0;
+  if (valorLido >= 673 && valorLido <= 693)
+    valor = 1;
+  else if (valorLido >= 843 && valorLido <= 853)
+    valor = 0;
 
-  if (armado == 1) {
+  if (valor == 1) {
     shiftOut(DATA, CLOCK, LSBFIRST, pos);
     
     if (millis() - tinicial >= 200) {
@@ -38,7 +38,7 @@ void loop() {
     
     if (pos == 0)
         pos = 128;
-  } else if (armado == 0) {
+  } else if (valor == 0) {
     aLEDro.setAllLow();
     pos = 0;
   }
