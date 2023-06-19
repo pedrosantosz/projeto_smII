@@ -5,7 +5,7 @@
 
 ShiftRegister74HC595 aLEDro(1, DATA, CLOCK, LATCH);
 
-int valorLido, armado = -1, pos = 128;
+int valorLido, valor = -1, pos = 128;
 unsigned long tinicial = millis();
 
 void setup() {
