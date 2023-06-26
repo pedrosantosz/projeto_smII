@@ -1,8 +1,8 @@
 #include <ShiftDisplay.h>
 
-#define RED
-#define GREEN
-#define BUZZER
+#define RED A0
+#define GREEN A1
+#define BUZZER 13
 
 int valorLido, on = -1, armado=-1;
 
