@@ -10,8 +10,6 @@ ShiftRegister74HC595 leds(1, DATA, CLOCK, LATCH);
 
 int alarme = -1, stateLeds = 0;
 unsigned long tInicial = millis();
-unsigned long tInicialAlarme = millis();
-
 
 void setup() {
   pinMode(SENSOR, INPUT);
