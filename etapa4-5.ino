@@ -2,7 +2,7 @@
 
 #define RED A0
 
-ShiftDisplay aledro(COMMON_CATHODE, 4);
+ShiftDisplay display(COMMON_CATHODE, 4);
 
 int contagem = 10, estado = 0;
 unsigned long tConta = millis();
@@ -13,12 +13,12 @@ void setup() {
 
 void loop() {
 	if (millis() - tConta >= 1000 && contagem >= 0) {
-		aledro.set(contagem);
+		display.set(contagem);
 		contagem--;
 		tConta = millis();
 
 		digitalWrite(RED, estado);
     		estado = !estado;
 	}
-	aledro.show();
+	display.show();
 }
