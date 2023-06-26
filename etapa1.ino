@@ -1,7 +1,7 @@
 #include <ShiftDisplay.h>
 int valorLido, valor = -1, atual=-1;
 
-ShiftDisplay aledro(COMMON_CATHODE, 4);
+ShiftDisplay display(COMMON_CATHODE, 4);
  
 void setup() {
   pinMode(A0, OUTPUT);
@@ -17,16 +17,16 @@ void loop() {
 
   if (valor == 1) {
     atual = 1;
-    aledro.set("on");
+    display.set("on");
     digitalWrite(A1, 0);
     digitalWrite(A0, 1);    
   }else if (valor == 0) {
     atual = 0;
-    aledro.set("off");
+    display.set("off");
     digitalWrite(A0, 0);
     digitalWrite(A1, 1);
   } else if (valor == -1) {
-    aledro.set("off");
+    display.set("off");
   }
 
   if (valorLido >= 673 && valorLido <= 693) {
@@ -45,5 +45,5 @@ void loop() {
     }
   }
 
-  aledro.show();
+  display.show();
 }
