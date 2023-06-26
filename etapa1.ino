@@ -11,8 +11,9 @@ ShiftDisplay display(COMMON_CATHODE, 4);
 void setup() {
   pinMode(RED, OUTPUT);
   pinMode(GREEN, OUTPUT);
+  pinMode(BUZZER, OUTPUT);
+ 
   pinMode(A3, INPUT);
-  pinMode(BUZZER, INPUT);
 
   digitalWrite(A1, 1);
 }
@@ -22,12 +23,16 @@ void loop() {
 
   if (on == 1) {
     armado = 1;
+   
     display.set("on");
+   
     digitalWrite(RED, 1);  
     digitalWrite(GREEN, 0);
   }else if (on == 0) {
     armado = 0;
+   
     display.set("off");
+   
     digitalWrite(RED, 0);
     digitalWrite(GREEN, 1);
   } else if (on == -1) {
