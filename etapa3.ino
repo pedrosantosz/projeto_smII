@@ -6,9 +6,9 @@
 #define SENSOR 12
 #define BUZZER 13
 
-ShiftRegister74HC595 aLEDro(1, DATA, CLOCK, LATCH);
+ShiftRegister74HC595 leds(1, DATA, CLOCK, LATCH);
 
-int alarme = -1, leds = 0;
+int alarme = -1, stateLeds = 0;
 unsigned long tInicial = millis();
 unsigned long tInicialAlarme = millis();
 
@@ -16,7 +16,6 @@ unsigned long tInicialAlarme = millis();
 void setup() {
   pinMode(SENSOR, INPUT);
   pinMode(BUZZER, OUTPUT);
-  
 }
 
 void loop() {
@@ -26,15 +25,15 @@ void loop() {
 
   if (alarme == 1) {
     if (millis() - tInicial >= 300) {
-      leds = !leds;
+      stateLeds = !stateLeds;
       tInicial = millis();
     }
     
-    if (leds == 1){
-      aLEDro.setAllHigh();
+    if (stateLeds == 1){
+      leds.setAllHigh();
       tone(BUZZER, 12800);
     } else {
-      aLEDro.setAllLow();
+      leds.setAllLow();
       noTone(BUZZER); 
     }
   }
