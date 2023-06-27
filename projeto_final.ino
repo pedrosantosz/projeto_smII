@@ -5,76 +5,118 @@
 #define LATCH 3
 #define CLOCK 4
 
-int valorLido, valor = -1, atual=-1, armado = -1, pos = 128;
-unsigned long tinicial = millis();
+#define RED A0
+#define GREEN A1
+#define BUZZER 13
+#define SENSOR 12
 
-ShiftDisplay aledro(COMMON_CATHODE, 4);
-ShiftRegister74HC595 aLEDro(1, DATA, CLOCK, LATCH);
+int valorLido, on = -1, armado = -1, pos = 128, alarme = -1, contagem = 10, estado = 0, stateLeds = 0;
+unsigned long tinicial = millis(), tConta = millis(),  tInicial = millis();
+
+ShiftDisplay display(COMMON_CATHODE, 4);
+ShiftRegister74HC595 leds(1, DATA, CLOCK, LATCH);
  
 void setup() {
   pinMode(DATA, OUTPUT);
   pinMode(CLOCK, OUTPUT);
   pinMode(LATCH, OUTPUT);
 
-  pinMode(A0, OUTPUT);
-  pinMode(A1, OUTPUT);
+  pinMode(RED, OUTPUT);
+  pinMode(GREEN, OUTPUT);
+  pinMode(BUZZER, OUTPUT);
+
+  pinMode(SENSOR, INPUT);
   pinMode(A3, INPUT);
-  pinMode(13, INPUT);
 
   digitalWrite(A1, 1);
-  aLEDro.setAllLow();
+  leds.setAllLow();
 }
 
 void loop() {
   valorLido = analogRead(A3);
 
-  if (valor == 1) {
-    atual = 1;
-    aledro.set("on");
-    digitalWrite(A1, 0);
-    digitalWrite(A0, 1);    
-  }else if (valor == 0) {
-    atual = 0;
-    aledro.set("off");
-    digitalWrite(A0, 0);
-    digitalWrite(A1, 1);
-  } else if (valor == -1) {
-    aledro.set("off");
+  if (on == 1) {
+    armado = 1;
+
+    if (millis() - tConta >= 1000 && contagem >= 0) {
+    display.set(contagem);
+    contagem--;
+    tConta = millis();
+
+    digitalWrite(RED, estado);
+    estado = !estado;
+  }
+  //display.show();
+
+  if (contagem < 0) {
+    display.set("on");
+    if (digitalRead(SENSOR) == 0) {
+      alarme = 1;
+    }
+
+    if (alarme == 1) {
+      if (millis() - tInicial >= 300) {
+        stateLeds = !stateLeds;
+        tInicial = millis();
+      }
+
+      if (stateLeds == 1) {
+        leds.setAllHigh();
+        tone(BUZZER, 2300);
+      } else {
+        leds.setAllLow();
+        noTone(BUZZER);
+      }
+    }
+  }
+
+    digitalWrite(RED, 1);  
+    digitalWrite(GREEN, 0);
+
+    if (alarme != 1) {
+        shiftOut(DATA, CLOCK, LSBFIRST, pos);
+    
+        if (millis() - tinicial >= 200) {
+            pos = pos / 2;
+            tinicial = millis();
+        }
+    
+        digitalWrite(LATCH, 1);  
+        digitalWrite(LATCH, 0);
+    
+        if (pos == 0)
+            pos = 128;
+    }
+  }else if (on == 0) {
+    armado = 0;
+    contagem = 10;
+    alarme = 0;
+
+    display.set("off");
+    
+    digitalWrite(RED, 0);
+    digitalWrite(GREEN, 1);
+
+    leds.setAllLow();
+    pos = 0;
+  } else if (on == -1) {
+    display.set("off");
   }
 
   if (valorLido >= 673 && valorLido <= 693) {
-    valor = 1;
-    if (atual != 1) {
-      tone(13, 12570);
+    on = 1;
+    if (armado != 1) {
+      tone(BUZZER, 12570);
       delay(350); 
-      noTone(13);
+      noTone(BUZZER);
     }
   }else if (valorLido >= 843 && valorLido <= 853) {
-    valor = 0;
-    if (atual != 0) {
-      tone(13, 12570);
+    on = 0;
+    if (armado != 0) {
+      tone(BUZZER, 12570);
       delay(350);
-      noTone(13);
+      noTone(BUZZER);
     }
   }
-
-  aledro.show();
-
-  if (valor == 1) {
-    shiftOut(DATA, CLOCK, LSBFIRST, pos);
-    
-    if (millis() - tinicial >= 200) {
-      pos = pos / 2;
-      tinicial = millis();
-    }
-    
-    digitalWrite(LATCH, 1);  
-    digitalWrite(LATCH, 0);
-    
-    if (pos == 0)
-        pos = 128;
-  } else if (valor == 0) {
-    aLEDro.setAllLow();
-    pos = 0;
-  }
+  display.show();
 }
