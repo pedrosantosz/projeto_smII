@@ -38,7 +38,7 @@ void loop() {
   if (on == 1) {
     armado = 1;
 
-    if (millis() - tConta >= 1000 && contagem >= 0) {
+    if (millis() - tConta >= 1000 /*&& contagem >= 0*/) {
     display.set(contagem);
     contagem--;
     tConta = millis();
@@ -48,7 +48,7 @@ void loop() {
   }
   //display.show();
 
-  if (contagem < 0) {
+  if (contagem < -1) {
     display.set("on");
     if (digitalRead(SENSOR) == 0) {
       alarme = 1;
