@@ -10,7 +10,7 @@
 #define BUZZER 13
 #define SENSOR 12
 
-int valorLido, on = -1, armado = -1, pos = 128, alarme = -1, contagem = 10, estado = 0, stateLeds = 0;
+int valorLido, on = -1, armado = -1, pos = 0, alarme = -1, contagem = 10, estado = 0, stateLeds = 0;
 unsigned long tinicial = millis(), tConta = millis(),  tInicial = millis();
 
 ShiftDisplay display(COMMON_CATHODE, 4);
@@ -74,18 +74,15 @@ void loop() {
     digitalWrite(GREEN, 0);
 
     if (alarme != 1) {
-        shiftOut(DATA, CLOCK, LSBFIRST, pos);
-    
         if (millis() - tinicial >= 200) {
-            pos = pos / 2;
-            tinicial = millis();
-        }
-    
-        digitalWrite(LATCH, 1);  
-        digitalWrite(LATCH, 0);
-    
-        if (pos == 0)
-            pos = 128;
+        if (pos == 8)
+          pos = 0;
+
+        leds.setAllLow();
+        leds.set(pos, 1);
+        pos++;
+        tinicial = millis();
+      }
     }
   }else if (on == 0) {
     armado = 0;
@@ -106,14 +103,14 @@ void loop() {
   if (valorLido >= 673 && valorLido <= 693) {
     on = 1;
     if (armado != 1) {
-      tone(BUZZER, 12570);
+      tone(BUZZER, 2300);
       delay(350); 
       noTone(BUZZER);
     }
   }else if (valorLido >= 843 && valorLido <= 853) {
     on = 0;
     if (armado != 0) {
-      tone(BUZZER, 12570);
+      tone(BUZZER, 2300);
       delay(350);
       noTone(BUZZER);
     }
