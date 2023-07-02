@@ -38,7 +38,7 @@ void loop() {
   if (on == 1) {
     armado = 1;
 
-    if (millis() - tConta >= 1000 /*&& contagem >= 0*/) {
+    if (millis() - tConta >= 1000 && contagem >= -1) {
     display.set(contagem);
     contagem--;
     tConta = millis();
@@ -68,9 +68,7 @@ void loop() {
         noTone(BUZZER);
       }
     }
-  }
-
-    digitalWrite(RED, 1);  
+  } 
     digitalWrite(GREEN, 0);
 
     if (alarme != 1) {
