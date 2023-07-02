@@ -39,13 +39,13 @@ void loop() {
     armado = 1;
 
     if (millis() - tConta >= 1000 && contagem >= -1) {
-    display.set(contagem);
-    contagem--;
-    tConta = millis();
+     display.set(contagem);
+     contagem--;
+     tConta = millis();
 
-    digitalWrite(RED, estado);
-    estado = !estado;
-  }
+     digitalWrite(RED, estado);
+     estado = !estado;
+    }
   //display.show();
 
   if (contagem < -1) {
